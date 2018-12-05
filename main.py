@@ -7,9 +7,12 @@ loadedData = {}
 
 def loadfile(button):
     filename = app.getEntry("f1")
-    #print(filename)
+    # print(filename)
     parsewpn(filename)
 
+
+# todo: Rewrite this again, so it will load properly
+# Needs to be able to handle those godawful nested bits { [ etc
 def parsewpn(filename):
     with open(filename) as f:
         currentFile = f.read().splitlines()
