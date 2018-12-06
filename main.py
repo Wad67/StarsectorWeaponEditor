@@ -1,5 +1,5 @@
 # import the library
-import json
+import ast
 
 from appJar import gui
 
@@ -17,12 +17,12 @@ def loadfile(button):
     with open(filename, 'r') as content_file:
         file = content_file.read()
     # weird erroneous shit to handle:
-    file = file.replace('ROUGH', '"ROUGH"')
+    # file = file.replace('ROUGH', '"ROUGH"')
 
     file = file.replace('\n', ' ').replace('\r', '')
     file = file.replace(' ', '')
 
-    loadedData = eval(file)
+    loadedData = ast.literal_eval(file.replace('ROUGH', '"ROUGH"'))
     print(loadedData)
     print(type(loadedData))
 
@@ -32,8 +32,8 @@ def save(button):
     global loadedData
     filename = app.getEntry("f1")
     file = open(filename, 'w')
-    loadedData['textureType'] = loadedData['textureType'].replace('"ROUGH"', 'ROUGH')
-    json.dump(loadedData, file)
+    # loadedData['textureType'] =
+    file.write(repr(loadedData).replace("'ROUGH'", 'ROUGH'))
 
     print('FUCK')
 
