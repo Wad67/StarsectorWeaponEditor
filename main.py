@@ -1,20 +1,41 @@
 # import the library
+import json
+
 from appJar import gui
 
-from wpnfilehandler import loadWpnFile
+loadedData = {}
 
 acceptableWeaponKeys = ['id', 'animationType', 'barrelMode', 'displayArcRadius', 'fireSoundTwo',
                         'hardpointAngleOffsets', 'hardpointOffsets', 'hardpointSprite', 'hardpointGunSprite']
-loadedData = {}
+print(loadedData)
 
 def loadfile(button):
     global loadedData
     filename = app.getEntry("f1")
     # print(filename)
-    loadedData = loadWpnFile(filename)
+    # loadedData = loadWpnFile(filename)
+    with open(filename, 'r') as content_file:
+        file = content_file.read()
+    # weird erroneous shit to handle:
+    file = file.replace('ROUGH', '"ROUGH"')
+
+    file = file.replace('\n', ' ').replace('\r', '')
+    file = file.replace(' ', '')
+
+    loadedData = eval(file)
+    print(loadedData)
+    print(type(loadedData))
 
 
+# todo: this
+def save(button):
+    global loadedData
+    filename = app.getEntry("f1")
+    file = open(filename, 'w')
+    loadedData['textureType'] = loadedData['textureType'].replace('"ROUGH"', 'ROUGH')
+    json.dump(loadedData, file)
 
+    print('FUCK')
 
 
 def display(button):
@@ -31,9 +52,7 @@ def display(button):
         #app.addLabel(loadedData[key])
 
 
-#todo: this
-def save(button):
-    print('no')
+
 
 # create a GUI variable called app
 app = gui(showIcon=0)
